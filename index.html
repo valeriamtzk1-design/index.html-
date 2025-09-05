@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Dolce Vita</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background-color: #fafafa;
+      color: #333;
+    }
+
+    header {
+      background: url('https://th.bing.com/th/id/R.e6e4d698b0ea6612f25a3735e9a67ce7?rik=cQLANajmj8VHWg&riu=http%3a%2f%2f1.bp.blogspot.com%2f-fpl8BSpcznM%2fT_qcidqZwxI%2fAAAAAAAARmg%2fZYx-PvO_vqk%2fs1600%2fItaly%2b2.jpg&ehk=fKkw9f3wtEEowtzddGJZ6aFeZkZssSp0NPmvydA4cjw%3d&risl=&pid=ImgRaw&r=0') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 4rem;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    main {
+      padding: 40px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+      color: #b22222;
+    }
+
+    .menu-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    details {
+      border: 2px solid #b22222;
+      border-radius: 12px;
+      padding: 15px;
+      background-color: #fff8f0;
+      transition: all 0.3s ease-in-out;
+    }
+
+    summary {
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    summary img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #b22222;
+    }
+
+    .menu-items {
+      margin-top: 15px;
+      display: none;
+    }
+
+    details[open] .menu-items {
+      display: block;
+    }
+
+    .food-item {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .food-item img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .food-item h3 {
+      margin: 10px 0 5px;
+      color: #333;
+    }
+
+    .food-item p {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    /* Botón del formulario */
+    #formLink {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #e67e22;
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-family: 'Segoe UI', sans-serif;
+      font-weight: bold;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: background 0.3s;
+    }
+
+    #formLink:hover {
+      background-color: #d35400;
+    }
+
+    /* Modal del formulario */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: #fffdfb;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      position: relative;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .modal-content h2 {
+      text-align: center;
+      color: #d35400;
+    }
+
+    .modal-content label {
+      display: block;
+      margin-bottom: 15px;
+      color: #5d4037;
+    }
+
+    .modal-content input[type="email"],
+    .modal-content textarea,
+    .modal-content select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc5b9;
+      border-radius: 8px;
+      background-color: #fffdfb;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .modal-content button {
+      background-color: #e67e22;
+      color: white;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .modal-content button:hover {
+      background-color: #d35400;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .thank-you {
+      text-align: center;
+      padding: 20px;
+      background-color: #fffdfb;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: 0 auto;
+      display: none;
+    }
+
+    .thank-you h3 {
+      color: #27ae60;
+    }
+
+    .thank-you button {
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .thank-you button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <!-- Botón para abrir modal del formulario -->
+  <a href="#" id="formLink">Formulario 🍽️</a>
+
+  <!-- Portada -->
+  <header>
+    <h1>🍝 La Dolce Vita 🍷</h1>
+  </header>
+
+  <!-- Menú -->
+  <main>
+    <h2>Nuestro Menú</h2>
+    <div class="menu-section">
+      <!-- Pastas -->
+      <details>
+        <summary>
+          <img src="https://www.recetasderechupete.com/wp-content/uploads/2022/09/Pasta-con-brocoli-y-guisantes.jpg" alt="Pastas">
+          Pastas
+        </summary>
+        <div class="menu-items">
+          <div class="food-item">
+            <h3>Spaghetti Carbonara</h3>
+            <p>Clásica receta italiana con huevo, queso, panceta y pimienta negra.</p>
+            <img src="https://www.thefierychef.com/wp-content/uploads/2023/01/spaghetti-carbonara.jpg" alt="Spaghetti Carbonara">
+          </div>
+          <div class="food-item">
+            <h3>Fettuccine Alfredo</h3>
+            <p>Pasta con salsa cremosa de mantequilla y queso parmesano.</p>
+            <img src="https://www.cookingclassy.com/wp-content/uploads/2019/09/alfredo-sauce-15.jpg" alt="Fettuccine Alfredo">
+          </div>
+        </div>
+      </details>
+
+      <!-- Pizzas -->
+      <details>
+        <summary>
+          <img src="https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?cs=srgb&dl=artesanal-pizza-cheese-close-up-1566837.jpg&fm=jpg" alt="Pizzas">
+          Pizzas
+        </summary>
+        <div class="menu-items">
+          <div class="food-item">
+            <h3>Pizza Margherita</h3>
+            <p>Base de tomate, mozzarella fresca, albahaca y aceite de oliva.</p>
+            <img src="https://th.bing.com/th/id/R.e76a10804f036a4a38256837d67d6f88?rik=K6bOSuzw92idkA&pid=ImgRaw&r=0" alt="Pizza Margherita">
+          </div>
+          <div class="food-item">
+            <h3>Pizza Pepperoni</h3>
+            <p>Deliciosa pizza con abundante pepperoni y queso mozzarella.</p>
+            <img src="https://th.bing.com/th/id/R.8bfdeaa0ac182cb0c52329b65f90dd28?rik=ZMklF0X4fVx6ZQ&pid=ImgRaw&r=0" alt="Pizza Pepperoni">
+          </div>
+        </div>
+      </details>
+
+      <!-- Bebidas -->
+      <details>
+        <summary>
+          <img src="https://entrecopasdeagave.com/wp-content/uploads/bebidas-con-tequila.jpg" alt="Bebidas">
+          Bebidas
+        </summary>
+        <div class="menu-items">
+          <div class="food-item">
+            <h3>Clericot</h3>
+            <p>Bebida refrescante a base de vino tinto, frutas frescas y soda.</p>
+            <img src="https://tse2.mm.bing.net/th/id/OIP.PQPxUdZtdqO06RTI4fsDRgHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Clericot">
+          </div>
+          <div class="food-item">
+            <h3>Vino Tinto</h3>
+            <p>Selección de vinos italianos de la mejor calidad.</p>
+            <img src="https://tse3.mm.bing.net/th/id/OIP.QgEEW16zucBkWYWfQWHN2gHaFj?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Vino Tinto">
+          </div>
+        </div>
+      </details>
+
+      <!-- Postres -->
+      <details>
+        <summary>
+          <img src="https://i.blogs.es/948245/mousse_yogur/1366_2000.jpg" alt="Postres">
+          Postres
+        </summary>
+        <div class="menu-items">
+          <div class="food-item">
+            <h3>Tiramisú</h3>
+            <p>Postre tradicional con café, bizcocho, cacao y queso mascarpone.</p>
+            <img src="https://th.bing.com/th/id/R.f9668ca621a6521884f9642378abfd48?rik=ZIpqc7%2bPojjW2g&riu=http%3a%2f%2fwww.la-recette.net%2fwp-content%2fuploads%2f2016%2f11%2fRX-FNM_030111-Sugar-Fix-005_s4x3.jpg.rend_.sniipadlarge.jpeg&ehk=qqtOuE97Oi%2b2wR4QxZqbh9jBO0SHz2zLd5CnCzNnMrg%3d&risl=&pid=ImgRaw&r=0" alt="Tiramisú">
+          </div>
+          <div class="food-item">
+            <h3>Panna Cotta</h3>
+            <p>Delicada crema italiana acompañada de frutos rojos frescos.</p>
+            <img src="https://i1.wp.com/www.cosiitaliano.com/wp-content/uploads/2020/06/Panna-Cotta-with-Berries-scaled.jpg?fit=2560%2C1709" alt="Panna Cotta">
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- Especiales -->
+    <div class="especiales">
+      <h2>🌟 Especiales</h2>
+      <p>Descarga nuestros documentos en PDF:</p>
+      <ul>
+        <li><a href="Menu del coliseo.pdf" target="_blank">📄 Menú del Coliseo</a></li>
+        <li><a href="triptico.pdf" target="_blank">📄 Tríptico</a></li>
+        <li><a href="cupones.pdf" target="_blank">📄 Cupones</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- Modal del formulario -->
+  <div class="modal" id="modalForm">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <form id="experienceForm" action="https://formspree.io/f/xanbgnkq" method="POST">
+        <h2>🍽️ Cuéntanos tu experiencia</h2>
+
+        <label>
+          📧 Correo electrónico:
+          <input type="email" name="email" placeholder="ejemplo@correo.com" required>
+        </label>
+
+        <label>
+          🍝 ¿Cómo fue su experiencia en el restaurante?
+          <textarea name="experiencia" placeholder="Describe tu experiencia..." required></textarea>
+        </label>
+
+        <label>
+          🤔 ¿Le agradó el servicio que le ofrecieron?
+          <select name="servicio" required>
+            <option value="">Selecciona una opción</option>
+            <option value="sí">Sí, excelente</option>
+            <option value="más o menos">Más o menos</option>
+            <option value="no">No</option>
+          </select>
+        </label>
+
+        <label>
+          💬 Sugerencias o quejas:
+          <textarea name="sugerencias" placeholder="Comparte tus sugerencias o quejas..."></textarea>
+        </label>
+
+        <button type="submit">Enviar</button>
+      </form>
+
+      <div class="thank-you">
+        <h3>✅ ¡Gracias por tu mensaje!</h3>
+        <p>Tu opinión es muy importante para nosotros.</p>
+        <button id="backHome">⬅️ Regresar al inicio</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Controlar que solo un menú esté abierto a la vez
+    const details = document.querySelectorAll('.menu-section details');
+    details.forEach((detail) => {
+      detail.addEventListener('click', () => {
+        details.forEach((other) => {
+          if (other !== detail) {
+            other.removeAttribute('open');
+          }
+        });
+      });
+    });
+
+    // Formulario modal
+    const formLink = document.getElementById('formLink');
+    const modal = document.getElementById('modalForm');
+    const closeModal = document.getElementById('closeModal');
+    const form = document.getElementById('experienceForm');
+    const thankYou = modal.querySelector('.thank-you');
+    const backHome = document.getElementById('backHome');
+
+    formLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.style.display = 'none';
+      form.style.display = 'block';
+      thankYou.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        form.style.display = 'block';
+        thankYou.style.display = 'none';
+      }
+    });
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(form);
+      fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      }).then(response => {
+        if (response.ok) {
+          form.style.display = 'none';
+          thankYou.style.display = 'block';
+          form.reset();
+        } else {
+          alert('Hubo un error al enviar el formulario. Intenta nuevamente.');
+        }
+      });
+    });
+
+    backHome.addEventListener('click', () => {
+      modal.style.display = 'none';
+      form.style.display = 'block';
+      thankYou.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
